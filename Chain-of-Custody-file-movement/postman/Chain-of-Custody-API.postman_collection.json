@@ -1,0 +1,453 @@
+{
+  "info": {
+    "name": "Chain of Custody API",
+    "description": "Complete API collection for testing Chain of Custody file movement system",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api",
+      "type": "string"
+    },
+    {
+      "key": "fileId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "userId",
+      "value": "test-user-001",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/../health",
+          "host": ["{{baseUrl}}"],
+          "path": ["..", "health"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Upload Endpoints",
+      "item": [
+        {
+          "name": "Upload File",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    const response = pm.response.json();",
+                  "    pm.environment.set('fileId', response.fileId);",
+                  "    pm.test('File uploaded successfully', function () {",
+                  "        pm.expect(response.fileId).to.exist;",
+                  "        pm.expect(response.checksum).to.exist;",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "userId",
+                  "value": "{{userId}}",
+                  "type": "text"
+                },
+                {
+                  "key": "department",
+                  "value": "IT Security",
+                  "type": "text"
+                },
+                {
+                  "key": "caseNumber",
+                  "value": "CASE-2023-001",
+                  "type": "text"
+                },
+                {
+                  "key": "evidenceType",
+                  "value": "Log File",
+                  "type": "text"
+                },
+                {
+                  "key": "classification",
+                  "value": "Internal",
+                  "type": "text"
+                },
+                {
+                  "key": "notes",
+                  "value": "Test upload via Postman",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/upload",
+              "host": ["{{baseUrl}}"],
+              "path": ["upload"]
+            }
+          }
+        },
+        {
+          "name": "Get File Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/upload/status/{{fileId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["upload", "status", "{{fileId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Upload List (Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/upload/list?page=1&limit=10&sortBy=createdAt&sortOrder=desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["upload", "list"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt"
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "desc"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Upload List (Filtered)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/upload/list?department=IT Security&status=active&page=1&limit=5",
+              "host": ["{{baseUrl}}"],
+              "path": ["upload", "list"],
+              "query": [
+                {
+                  "key": "department",
+                  "value": "IT Security"
+                },
+                {
+                  "key": "status",
+                  "value": "active"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "5"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Move Endpoints",
+      "item": [
+        {
+          "name": "Move File",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fileId\": \"{{fileId}}\",\n  \"userId\": \"{{userId}}\",\n  \"newLocation\": \"secure-archive\",\n  \"notes\": \"Moving to secure storage via Postman\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/move",
+              "host": ["{{baseUrl}}"],
+              "path": ["move"]
+            }
+          }
+        },
+        {
+          "name": "Get Move History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/move/history/{{fileId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["move", "history", "{{fileId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Move List (Paginated)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/move/list?page=1&limit=10&sortOrder=desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["move", "list"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "desc"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Batch Move Files",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fileIds\": [\"{{fileId}}\"],\n  \"userId\": \"{{userId}}\",\n  \"newLocation\": \"long-term-storage\",\n  \"notes\": \"Batch move operation via Postman\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/move/batch",
+              "host": ["{{baseUrl}}"],
+              "path": ["move", "batch"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Download Endpoints",
+      "item": [
+        {
+          "name": "Download File",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/download/{{fileId}}?userId={{userId}}&notes=Downloaded via Postman",
+              "host": ["{{baseUrl}}"],
+              "path": ["download", "{{fileId}}"],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": "{{userId}}"
+                },
+                {
+                  "key": "notes",
+                  "value": "Downloaded via Postman"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Download Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/download/info/{{fileId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["download", "info", "{{fileId}}"]
+            }
+          }
+        },
+        {
+          "name": "Log File Access",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fileId\": \"{{fileId}}\",\n  \"userId\": \"{{userId}}\",\n  \"notes\": \"File accessed via Postman\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/download/access-log",
+              "host": ["{{baseUrl}}"],
+              "path": ["download", "access-log"]
+            }
+          }
+        },
+        {
+          "name": "Get Download List",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/download/list?page=1&limit=10&action=download",
+              "host": ["{{baseUrl}}"],
+              "path": ["download", "list"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "action",
+                  "value": "download"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reports Endpoints",
+      "item": [
+        {
+          "name": "Get Reports",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reports/files?page=1&limit=20&sortBy=createdAt&sortOrder=desc",
+              "host": ["{{baseUrl}}"],
+              "path": ["reports", "files"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "20"
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt"
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "desc"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Reports (Filtered)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reports/files?department=IT Security&status=active&startDate=2023-01-01",
+              "host": ["{{baseUrl}}"],
+              "path": ["reports", "files"],
+              "query": [
+                {
+                  "key": "department",
+                  "value": "IT Security"
+                },
+                {
+                  "key": "status",
+                  "value": "active"
+                },
+                {
+                  "key": "startDate",
+                  "value": "2023-01-01"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Export CSV",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reports/export/csv?department=IT Security",
+              "host": ["{{baseUrl}}"],
+              "path": ["reports", "export", "csv"],
+              "query": [
+                {
+                  "key": "department",
+                  "value": "IT Security"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Export XML",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reports/export/xml?status=active",
+              "host": ["{{baseUrl}}"],
+              "path": ["reports", "export", "xml"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "active"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,169 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f8f9fa;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Custom styles for Chain of Custody app */
+.navbar-brand {
+  font-weight: bold;
+  color: #2c3e50 !important;
+}
+
+.card {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: none;
+  margin-bottom: 1rem;
+}
+
+.card-header {
+  background-color: #3498db;
+  color: white;
+  font-weight: bold;
+}
+
+.dropzone {
+  border: 2px dashed #3498db;
+  border-radius: 10px;
+  padding: 40px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #f8f9fa;
+}
+
+.dropzone:hover {
+  border-color: #2980b9;
+  background-color: #e3f2fd;
+}
+
+.dropzone.active {
+  border-color: #27ae60;
+  background-color: #e8f5e8;
+}
+
+.file-info {
+  background-color: #ecf0f1;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px 0;
+}
+
+.chain-event {
+  border-left: 4px solid #3498db;
+  padding: 15px;
+  margin: 10px 0;
+  background-color: white;
+  border-radius: 0 5px 5px 0;
+}
+
+.chain-event.upload {
+  border-left-color: #27ae60;
+}
+
+.chain-event.move {
+  border-left-color: #f39c12;
+}
+
+.chain-event.download {
+  border-left-color: #e74c3c;
+}
+
+.chain-event.access {
+  border-left-color: #9b59b6;
+}
+
+.status-badge {
+  font-size: 0.8em;
+  padding: 4px 8px;
+}
+
+.status-active {
+  background-color: #27ae60;
+}
+
+.status-archived {
+  background-color: #f39c12;
+}
+
+.status-deleted {
+  background-color: #e74c3c;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.filter-section {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.timeline-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px 0;
+}
+
+.hash-display {
+  font-family: 'Courier New', monospace;
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 5px;
+  word-break: break-all;
+  font-size: 0.9em;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.error-message {
+  color: #e74c3c;
+  background-color: #fdf2f2;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #e74c3c;
+}
+
+.success-message {
+  color: #27ae60;
+  background-color: #f2fdf2;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #27ae60;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container-fluid {
+    padding: 10px;
+  }
+  
+  .card {
+    margin-bottom: 15px;
+  }
+  
+  .dropzone {
+    padding: 20px;
+  }
+}

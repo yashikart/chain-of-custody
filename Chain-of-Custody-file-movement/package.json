@@ -1,0 +1,37 @@
+{
+  "name": "chain-of-custody-file-movement",
+  "version": "1.0.0",
+  "description": "A Node.js application for chain of custody file movement tracking",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "test": "node test-api.js",
+    "test:api": "node test-api.js"
+  },
+  "keywords": [
+    "chain-of-custody",
+    "file-movement",
+    "tracking",
+    "nodejs",
+    "express"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "form-data": "^4.0.0",
+    "json2csv": "^6.0.0-alpha.2",
+    "mongoose": "^7.8.7",
+    "multer": "^1.4.5-lts.1",
+    "xml2js": "^0.6.2",
+    "moment": "^2.29.4",
+    "nodemon": "^3.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
